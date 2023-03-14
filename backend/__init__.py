@@ -141,6 +141,7 @@ def add_api_endpoints(app):
         ProjectsQueriesAoiAPI,
         ProjectsQueriesPriorityAreasAPI,
         ProjectsQueriesFeaturedAPI,
+        ProjectQueriesRelatedProjectsAPI,
     )
     from backend.api.projects.activities import (
         ProjectsActivitiesAPI,
@@ -342,6 +343,10 @@ def add_api_endpoints(app):
     )
     api.add_resource(
         ProjectsQueriesFeaturedAPI, format_url("projects/queries/featured/")
+    )
+    api.add_resource(
+        ProjectQueriesRelatedProjectsAPI,
+        format_url("projects/queries/<int:project_id>/related-projects/"),
     )
 
     # Projects' addtional resources
