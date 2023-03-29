@@ -28,7 +28,6 @@ import {
   ReopenEditor,
   UnsavedMapChangesModalContent,
 } from './actionSidebars';
-import { fetchLocalJSONAPI } from '../../network/genericJSONRequest';
 import { MultipleTaskHistoriesAccordion } from './multipleTaskHistories';
 import { ResourcesTab } from './resourcesTab';
 import { ActionTabsNav } from './actionTabsNav';
@@ -78,7 +77,6 @@ export function TaskMapAction({
   const [validationComments, setValidationComments] = useState({});
   const [validationStatus, setValidationStatus] = useState({});
   const [historyTabChecked, setHistoryTabChecked] = useState(false);
-  const [multipleTasksInfo, setMultipleTasksInfo] = useState({});
   const [showMapChangesModal, setShowMapChangesModal] = useState(false);
   const [showSessionExpiringDialog, setShowSessionExpiringDialog] = useState(false);
   const [showSessionExpiredDialog, setSessionTimeExpiredDialog] = useState(false);
@@ -106,18 +104,6 @@ export function TaskMapAction({
   const historyTabSwitch = () => {
     setHistoryTabChecked(true);
     setActiveSection('history');
-  };
-
-  const handleTaskHistories = (taskIds) => {
-    if (taskIds.length < 1) return;
-
-    taskIds.forEach((id) => {
-      if (!Object.keys(multipleTasksInfo).includes(id.toString())) {
-        fetchLocalJSONAPI(`projects/${project.projectId}/tasks/${id}/`, token).then((data) =>
-          setMultipleTasksInfo({ ...multipleTasksInfo, [id]: data }),
-        );
-      }
-    });
   };
 
   useEffect(() => {
@@ -227,7 +213,7 @@ export function TaskMapAction({
   return (
     <>
       <Portal>
-        <div className="cf w-100 vh-minus-77-ns overflow-y-hidden">
+        <div className="cf w-100 vh-minus-69-ns overflow-y-hidden">
           <div className={`fl h-100 relative ${showSidebar ? 'w-70' : 'w-100-minus-4rem'}`}>
             {['ID', 'RAPID'].includes(editor) ? (
               <React.Suspense
@@ -297,7 +283,7 @@ export function TaskMapAction({
                 />
                 <div className="cf pb3">
                   <h3
-                    className="f2 fw6 mt2 mb1 ttu barlow-condensed blue-dark"
+                    className="f2 fw5 lh-title mt2 mb1 ttu barlow-condensed blue-dark"
                     lang={project.projectInfo && project.projectInfo.locale}
                   >
                     {project.projectInfo && project.projectInfo.name}
@@ -330,7 +316,7 @@ export function TaskMapAction({
                     action={action}
                   />
                 </div>
-                <div className="pt1">
+                <div className="pt0">
                   {activeSection === 'completion' && (
                     <>
                       {action === 'MAPPING' && (
@@ -438,7 +424,6 @@ export function TaskMapAction({
                       )}
                       {action === 'VALIDATION' && activeTasks.length > 1 && (
                         <MultipleTaskHistoriesAccordion
-                          handleChange={handleTaskHistories}
                           tasks={activeTasks}
                           projectId={project.projectId}
                         />
