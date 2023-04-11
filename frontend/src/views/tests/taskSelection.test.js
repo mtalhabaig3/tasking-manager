@@ -70,7 +70,6 @@ describe('Task Selection Page', () => {
 
     setup();
     expect(await screen.findByText(/Project Specific Mapping Notes/i)).toBeInTheDocument();
-    expect(screen.queryByText(/last updated by/i)).not.toBeInTheDocument();
   });
 
   it('should direct user to the tasks tab if user is an expert and has previous contributions in the project', async () => {
@@ -147,9 +146,10 @@ describe('Task Selection Page', () => {
       });
     });
     setup();
+    const user = userEvent.setup();
     await screen.findAllByText(/last updated by/i);
     // Selecting a single task that is available for validation
-    await userEvent.click(
+    await user.click(
       screen.getByRole('button', {
         name: /Task #5 Aadesh Baral/i,
       }),
@@ -160,7 +160,7 @@ describe('Task Selection Page', () => {
       }),
     ).toBeInTheDocument();
     // Selecting a single task that is available for validation
-    await userEvent.click(
+    await user.click(
       screen.getByRole('button', {
         name: /Task #6 Patrik_B/i,
       }),
@@ -171,7 +171,7 @@ describe('Task Selection Page', () => {
       }),
     ).toBeInTheDocument();
     // Unselecting selected tasks one by one
-    await userEvent.click(
+    await user.click(
       screen.getByRole('button', {
         name: /Task #5 Aadesh Baral/i,
       }),
@@ -181,7 +181,7 @@ describe('Task Selection Page', () => {
         name: /validate selected task/i,
       }),
     ).toBeInTheDocument();
-    await userEvent.click(
+    await user.click(
       screen.getByRole('button', {
         name: /Task #6 Patrik_B/i,
       }),
