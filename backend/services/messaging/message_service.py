@@ -706,8 +706,17 @@ class MessageService:
             query = query.filter(Message.read == (True if status == "read" else False))
 
         if message_type:
-            message_type_filters = map(int, message_type.split(","))
-            query = query.filter(Message.message_type.in_(message_type_filters))
+            message_type_filters = [
+                key.strip().lower() for key in message_type.split(",")
+            ]
+
+            filter_values = [
+                key.value
+                for key in MessageType
+                if key.name.lower() in message_type_filters
+            ]
+
+            query = query.filter(Message.message_type.in_(filter_values))
 
         if from_username is not None:
             query = query.join(Message.from_user).filter(

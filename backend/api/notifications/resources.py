@@ -129,7 +129,8 @@ class NotificationsAllAPI(Resource):
             - in: query
               name: messageType
               type: string
-              description: Optional message-type filter; leave blank to retrieve all
+              description:
+                Optional message-type filter; leave blank to retrieve all; Options include 'system', 'broadcast', etc
             - in: query
               name: from
               description: Optional from username filter
